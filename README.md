@@ -1,4 +1,4 @@
-# TFM_C2PA_AIGen_Img
+# Data Provenance for AI Generated images using C2PA Schema
 
 Software to generate an image an add provenance data to it following the C2PA Schema. It can also just add or read the C2PA Manifest of an image
 
