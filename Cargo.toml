@@ -1,0 +1,27 @@
+[package]
+name = "c2pa-GenAI"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+openssl = "0.10.64"
+openssl-sys = "0.9.102"
+chrono = "0.4.26"
+clap = { version = "4.2.7", features = ["derive"] }
+regex = "1.9.3"
+serde = "1.0.183"
+c2pa = {version = "0.31.3", features = ["file_io"] }
+
+#This repository contains several ML models
+candle-core = { git = "https://github.com/huggingface/candle.git", version = "0.5.1" }
+hf-hub = "0.3.2"
+# candle-nn = { git = "https://github.com/huggingface/candle.git", version = "0.5.1" }
+candle-transformers = { git = "https://github.com/huggingface/candle.git", version = "0.5.1" }
+candle-examples = { git = "https://github.com/huggingface/candle.git", version = "0.5.1" }
+anyhow = "1.0.82"
+tokenizers = "0.19.1"
+tracing-chrome = "0.7.2"
+tracing-subscriber = "0.3.18"
+image = "0.25.1"
