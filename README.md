@@ -1,6 +1,7 @@
 # Data Provenance for AI Generated images using C2PA Schema
 
 Software to generate an image an add provenance data to it following the C2PA Schema. It can also just add or read the C2PA Manifest of an image
+The image generation is made using Stable diffusion with the Candle rust library.
 
     Options:
         --add <VALUE>    adds a c2pa manifest to a media file, displays the contents afterwards
@@ -9,8 +10,8 @@ Software to generate an image an add provenance data to it following the C2PA Sc
         --prompt         Prompt to generate the image
         --uncond_prompt  Uncond prompt to generate the image
         --sd_version     Stable diffusion options
-    -h, --help          Print help
-    -V, --version       Print version
+    -h, --help           Print help
+    -V, --version        Print version
 
 
 
