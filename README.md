@@ -13,11 +13,16 @@ The image generation is made using Stable diffusion with the Candle rust library
         --final-image    Path and name of the created image
     -h, --help           Print help
     -V, --version        Print version
+    
+```console
+~>>  cargo build
+~>>  cargo run -- --create --prompt "Generate an Image of a Samurai" --uncond-prompt "He is not old" --sd-version turbo --final-image prueba.jpg
+```
 
- ~>>  cargo run -- --create --prompt "Generate an Image of a Samurai" --uncond-prompt "He is not old" --sd-version turbo --final-image prueba.jpg
- ![Samurai image generated](https://github.com/Shovar/TFM_C2PA_AIGen_Img/blob/main/prueba.jpg?raw=true)
+![Samurai image generated](https://github.com/Shovar/TFM_C2PA_AIGen_Img/blob/main/prueba.jpg?raw=true)
+```console
   "active_manifest": "urn:uuid:741eddb5-1af2-44c7-ad10-deed1b4b3960",
-  "manifests": {
+   "manifests": {
     "urn:uuid:741eddb5-1af2-44c7-ad10-deed1b4b3960": {
       "claim_generator": "Toni-c2pa-GenAI-code/0.1 c2pa-rs/0.31.3",
       "title": "AI Generated Image",
@@ -62,3 +67,4 @@ The image generation is made using Stable diffusion with the Candle rust library
     }
   }
 }
+```
