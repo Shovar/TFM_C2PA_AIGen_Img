@@ -16,7 +16,7 @@ The image generation is made using Stable diffusion with the Candle rust library
     
 ```console
 ~>>  cargo build
-~>>  cargo run -- --create --prompt "Generate an Image of a Samurai" --uncond-prompt "He is not old" --sd-version turbo --final-image prueba.jpg
+~>>  cargo run -- --create true --prompt "Generate an Image of a Samurai" --uncond-prompt "He is not old" --sd-version turbo --final-image prueba.jpg
 ```
 
 ![Samurai image generated](https://github.com/Shovar/TFM_C2PA_AIGen_Img/blob/main/prueba.jpg?raw=true)
