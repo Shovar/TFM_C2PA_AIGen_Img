@@ -3,22 +3,25 @@
 Software to add, edit and read provenance information for AI Generated images using C2PA Schema. It provides information about the GenAI model used to generate the image and the prompt introduced. The image generation is made using Stable diffusion with the Candle rust library.
 
     Options:
-        --create         true      Creates an image using the prompt and uncond_prompt and adds a c2pa manifest to it. 
-                                     Note: It should be used with at least the --prompt and --final_image parameters.
-        --edit           true      Edits an image using the prompt, uncond_prompt and a source image 
-                                   and adds a c2pa manifest to it. 
-                                     Note: It should be used with at least the --prompt, --img2img and --final_image parameters
-        --add           <VALUE>    Adds a c2pa manifest to a media file, displays the contents afterwards
-        --edit_manifest <VALUE>    Adds a c2pa manifest to a media file, displays the contents afterwards
-        --read          <VALUE>    Prints the c2pa manifest contents of a media file; fails if no manifest is present
+        --create            true     Creates an image using the prompt and uncond_prompt and adds a c2pa manifest to it. 
+                                       Note: It should be used with at least the --prompt and --final_image parameters.
+        --edit              true     Edits an image using the prompt, uncond_prompt and a source image 
+                                     and adds a c2pa manifest to it. 
+                                       Note: It should be used with at least the --prompt, --img2img and --final_image parameters
+        --add              <VALUE>   Adds a c2pa manifest to a media file, displays the contents afterwards
+        --edit_manifest    <VALUE>   Edits a c2pa manifest of a media file, displays the contents afterwards
+        --read             <VALUE>   Prints the c2pa manifest contents of a media file; fails if no manifest is present
     
     Parameters:
-        --prompt        <VALUE>     Prompt to generate the image
-        --uncond-prompt <VALUE>     Uncond prompt to generate the image
-        --sd-version    <VALUE>     Stable diffusion options: V1_5, (default) V2_1, Xl, Turbo
-        --final-image   <VALUE>     Name of the image to generate. Example: "Test_img.jpg"
-        --img2img       <Value>     Path to the source image to be edited. 
-
+        --prompt           <VALUE>   Prompt to generate the image
+        --uncond-prompt    <VALUE>   Uncond prompt to generate the image
+        --sd-version       <VALUE>   Stable diffusion options: V1_5, (default) V2_1, Xl, Turbo
+        --final-image      <VALUE>   Name of the image to generate. Example: "Test_img.jpg"
+        --img2img          <VALUE>   Path to the source image to be edited.
+        --cpu                        Run the image Generation using the CPU rather than GPU
+        --img2img_strength <VALUE>   The strength, indicates how much to transform the initial image. The
+                                     value must be between 0 and 1, a value of 1 discards the initial image
+                                     information.
 ```console
 ~>>  cargo build
 ~>>  cargo run -- --create true --prompt "Generate an Image of a Samurai" --uncond-prompt "He is not old" --sd-version turbo --final-image prueba.jpg

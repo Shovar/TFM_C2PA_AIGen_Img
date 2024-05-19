@@ -16,29 +16,35 @@ use tokenizers::Tokenizer;
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
-     /// The path to the media file to add a manifest to.
-     #[arg(long, value_name = "FILE")]
-     add: Option<String>,
- 
-    /// Whether to edit the manifest of the media file.
-     #[arg(long)]
-     edit:Option<bool>,
- 
-     /// The path to the media file to read the manifest from.
-     #[arg(long, value_name = "FILE")]
-     read: Option<String>,
+     /// Enable creation of a new media file and the addition of its manifest.
+    #[arg(long, conflicts_with = "edit", conflicts_with = "read", conflicts_with = "add", 
+     conflicts_with = "edit_manifest", help = "Enable creation of a new media file and the addition of its manifest.")]
+    create: Option<bool>,
 
-     #[arg(long)]
-     create:Option<bool>,
+    /// Enable editing of the media file and the addition of its manifest.
+    #[arg(long, conflicts_with = "create", conflicts_with = "read", conflicts_with = "add", 
+        conflicts_with = "edit_manifest", help = "Enable editing of the media file and the addition of its manifest.")]
+    edit: Option<bool>,
+
+    /// The path to the media file to read the manifest from.
+    #[arg(long, value_name = "FILE", conflicts_with = "create", conflicts_with = "edit", conflicts_with = "add", 
+        conflicts_with = "edit_manifest", help = "The path to the media file to read the manifest from.")]
+    read: Option<String>,
 
     /// The path to the media file to add a manifest to.
-    #[arg(long, value_name = "FILE")]
+    #[arg(long, value_name = "FILE", conflicts_with = "create", conflicts_with = "edit", conflicts_with = "read", 
+        conflicts_with = "edit_manifest", help = "The path to the media file to add a manifest to.")]
+    add: Option<String>,
+
+    /// The path to the media file to add a manifest to.
+    #[arg(long, value_name = "FILE", conflicts_with = "create", conflicts_with = "edit", conflicts_with = "read", 
+    conflicts_with = "add", help = "The path to the media file to add a manifest to.")]
     edit_manifest: Option<String>,
 
     /// The prompt to be used for image generation.
     #[arg(
         long,
-        default_value = ""
+        default_value = "Generate an image of a futuristic city at night."
     )]
     prompt: String,
 
@@ -653,8 +659,3 @@ pub fn run(args: Args) -> Result<()> {
     }
     Ok(())
 }
-/*
-fn main() -> Result<()> {
-    let args = Args::parse();
-    run(args)
-}*/
