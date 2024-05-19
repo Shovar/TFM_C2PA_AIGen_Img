@@ -15,25 +15,37 @@ use tokenizers::Tokenizer;
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
-
      /// The path to the media file to add a manifest to.
      #[arg(long, value_name = "FILE")]
      add: Option<String>,
  
-     /// The path to the media file to edit with a manifest.
-     #[arg(long, value_name = "FILE")]
-     edit: Option<String>,
+    /// Whether to edit the manifest of the media file.
+     #[arg(long)]
+     edit:Option<bool>,
  
      /// The path to the media file to read the manifest from.
      #[arg(long, value_name = "FILE")]
      read: Option<String>,
 
+     #[arg(long)]
+     create:Option<bool>,
+
+    /// The path to the media file to add a manifest to.
+    #[arg(long, value_name = "FILE")]
+    edit_manifest: Option<String>,
+
     /// The prompt to be used for image generation.
     #[arg(
         long,
-        default_value = "A very realistic photo of a rusty robot walking on a sandy beach"
+        default_value = ""
     )]
     prompt: String,
+
+    #[arg(long, default_value = "", help = "Author of the Image.")]
+    author: String,
+
+    #[arg(long, default_value = "Stable Diffusion", help = "AI model used to generate the image.")]
+    model: String,
 
     #[arg(long, default_value = "")]
     uncond_prompt: String,
@@ -640,8 +652,8 @@ pub fn run(args: Args) -> Result<()> {
     }
     Ok(())
 }
-
+/*
 fn main() -> Result<()> {
     let args = Args::parse();
     run(args)
-}
+}*/

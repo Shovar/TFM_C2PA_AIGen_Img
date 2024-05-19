@@ -1,5 +1,5 @@
 [package]
-name = "c2pa-GenAI"
+name = "c2pa_gen_ai"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,6 +12,7 @@ chrono = "0.4.26"
 clap = { version = "4.2.7", features = ["derive"] }
 regex = "1.9.3"
 serde = "1.0.183"
+sysinfo ="0.30.12"
 c2pa = {version = "0.31.3", features = ["file_io"] }
 
 #This repository contains several ML models
