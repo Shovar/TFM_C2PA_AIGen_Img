@@ -319,6 +319,7 @@ main() {
     }else {
         add_path  = args.add;
     }
+    
     //if --edit is set, edit the image with the img2img path and save it to the final_image path
     if args.edit != None {
         edit_path     = args.final_image.clone();

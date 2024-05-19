@@ -12,6 +12,7 @@ use clap::Parser;
 use stable_diffusion::vae::AutoEncoderKL;
 use tokenizers::Tokenizer;
 
+
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
