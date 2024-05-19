@@ -16,9 +16,8 @@ sysinfo ="0.30.12"
 c2pa = {version = "0.31.3", features = ["file_io"] }
 
 #This repository contains several ML models
-candle-core = { git = "https://github.com/huggingface/candle.git", version = "0.5.1" }
+candle-core = { git = "https://github.com/huggingface/candle.git", version = "0.5.1"}
 hf-hub = "0.3.2"
-# candle-nn = { git = "https://github.com/huggingface/candle.git", version = "0.5.1" }
 candle-transformers = { git = "https://github.com/huggingface/candle.git", version = "0.5.1" }
 candle-examples = { git = "https://github.com/huggingface/candle.git", version = "0.5.1" }
 anyhow = "1.0.82"
