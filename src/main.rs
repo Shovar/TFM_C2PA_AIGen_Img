@@ -14,31 +14,32 @@ use sysinfo::{System};
 struct Args {
     /// Enable creation of a new media file and the addition of its manifest.
     #[arg(long, conflicts_with = "edit", conflicts_with = "read", conflicts_with = "add", 
-    conflicts_with = "edit_manifest", help = "Enable creation of a new media file and the addition of its manifest.")]
+          conflicts_with = "edit_manifest", help = "Enable creation of a new media file and the addition of its manifest.")]
     create: Option<bool>,
 
     /// Enable editing of the media file and the addition of its manifest.
     #[arg(long, conflicts_with = "create", conflicts_with = "read", conflicts_with = "add", 
-    conflicts_with = "edit_manifest", help = "Enable editing of the media file and the addition of its manifest.")]
+          conflicts_with = "edit_manifest", help = "Enable editing of the media file and the addition of its manifest.")]
     edit: Option<bool>,
  
     /// The path to the media file to read the manifest from.
     #[arg(long, value_name = "FILE", conflicts_with = "create", conflicts_with = "edit", conflicts_with = "add", 
-    conflicts_with = "edit_manifest", help = "The path to the media file to read the manifest from.")]
+          conflicts_with = "edit_manifest", help = "The path to the media file to read the manifest from.")]
     read: Option<String>,
 
     /// The path to the media file to add a manifest to.
     #[arg(long, value_name = "FILE", conflicts_with = "create", conflicts_with = "edit", conflicts_with = "read", 
-    conflicts_with = "edit_manifest", help = "The path to the media file to add a manifest to.")]
+           conflicts_with = "edit_manifest", help = "The path to the media file to add a manifest to.")]
     add: Option<String>,
 
     /// The path to the media file to add a manifest to.
     #[arg(long, value_name = "FILE", conflicts_with = "create", conflicts_with = "edit", conflicts_with = "read", 
-    conflicts_with = "add", help = "The path to the media file to add a manifest to.")]
+        conflicts_with = "add", help = "The path to the media file to add a manifest to.")]
     edit_manifest: Option<String>,
 
     /// The prompt to be used for image generation.
-    #[arg( long, default_value = "", help = "The prompt to be used for image generation.")]
+    #[arg( long, default_value = "Generate an image of a futuristic city at night.", 
+           help = "The prompt to be used for image generation.")]
     prompt: String,
 
     #[arg(long, default_value = "", help = "The negative prompt to be used for image generation.")]
@@ -50,75 +51,25 @@ struct Args {
     #[arg(long, default_value = "Stable Diffusion", help = "AI model used to generate the image.")]
     model: String,
 
-    
     /// Run on CPU rather than on GPU.
     #[arg(long)]
     cpu: Option<bool>,
-    /*
-    /// Enable tracing (generates a trace-timestamp.json file).
-    #[arg(long)]
-    tracing: Option<bool>,
 
-    /// The height in pixels of the generated image.
-    #[arg(long)]
-    height: Option<usize>,
-
-    /// The width in pixels of the generated image.
-    #[arg(long)]
-    width: Option<usize>,
-
-    /// The UNet weight file, in .safetensors format.
-    #[arg(long, value_name = "FILE")]
-    unet_weights: Option<String>,
-
-    /// The CLIP weight file, in .safetensors format.
-    #[arg(long, value_name = "FILE")]
-    clip_weights: Option<String>,
-
-    /// The VAE weight file, in .safetensors format.
-    #[arg(long, value_name = "FILE")]
-    vae_weights: Option<String>,
-
-    #[arg(long, value_name = "FILE")]
-    /// The file specifying the tokenizer to used for tokenization.
-    tokenizer: Option<String>,
-
-    /// The size of the sliced attention or 0 for automatic slicing (disabled by default)
-    #[arg(long)]
-    sliced_attention_size: Option<usize>,
-
-    /// The number of steps to run the diffusion for.
-    #[arg(long)]
-    n_steps: Option<usize>,
-
-    /// The number of samples to generate iteratively.
-    #[arg(long, default_value_t = 1)]
-    num_samples: usize,
-
-    /// The numbers of samples to generate simultaneously.
-    #[arg[long, default_value_t = 1]]
-    bsize: usize,
-    */
     /// The name of the final image to generate.
     #[arg(long, value_name = "FILE", default_value = "sd_final.jpg", help = "The name of the final image to generate.")]
     final_image: Option<String>,
 
     #[arg(long, value_enum, default_value = "v2-1")]
     sd_version: StableDiffusionVersion,
-    /*
-    /// Generate intermediary images at each step.
-    #[arg(long, action)]
-    intermediary_images: bool,
-    */
+
     #[arg(long, value_name = "FILE", help = "The path of the source image to edit.")]
     img2img: Option<String>,
-    /*
     /// The strength, indicates how much to transform the initial image. The
     /// value must be between 0 and 1, a value of 1 discards the initial image
     /// information.
     #[arg(long, default_value_t = 0.8)]
     img2img_strength: f64,
-    */
+    
 }
 
 #[derive(Serialize,Debug, Clone, Copy, clap::ValueEnum, PartialEq, Eq)]
@@ -319,7 +270,7 @@ main() {
     }else {
         add_path  = args.add;
     }
-    
+
     //if --edit is set, edit the image with the img2img path and save it to the final_image path
     if args.edit != None {
         edit_path     = args.final_image.clone();
@@ -332,6 +283,7 @@ main() {
     }
     let mut prompt_data = PromptData::new(args.prompt.to_string(), args.uncond_prompt.to_string(), args.author.to_string());
     let mut model_data = ModelData::new(args.model.to_string(), args.sd_version);
+    
     //Confirm that the model is supported
     if model_data.model != "Stable Diffusion" && args.create != None  {
         panic!("Model not supported. Use Stable Diffusion for image generation.");}
