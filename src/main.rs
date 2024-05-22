@@ -278,8 +278,14 @@ main() {
         let args_edit = create_img::Args::parse();
         let _         = create_img::run(args_edit);
     }else {
-        edit_path   = args.final_image.clone();
-        source_path = args.edit_manifest.expect("USAGE: source path is required. Insert --edit_manifest <path>").to_string();
+        
+        if args.edit_manifest != None {
+            source_path = args.edit_manifest.expect("USAGE: source path is required. Insert --edit_manifest <path>").to_string();
+            edit_path   = args.final_image.clone();
+        }else {
+            source_path = "".to_string();
+            edit_path   = None;
+        }
     }
     let mut prompt_data = PromptData::new(args.prompt.to_string(), args.uncond_prompt.to_string(), args.author.to_string());
     let mut model_data = ModelData::new(args.model.to_string(), args.sd_version);
@@ -349,6 +355,7 @@ main() {
             }
         }
         (None, None, Some(file_path)) => {
+            println!("Printing manifest");
             read_manifest(&file_path).expect("manifest should be printed to stdout; perhaps no c2pa manifest is present?");
         }
         (None, None, None) => {
