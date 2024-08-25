@@ -128,14 +128,14 @@ create_new_manifest (src_path: &String, dest_path: &String, prompt_data: &Prompt
     let now_string = now.to_rfc3339();
 
     // Initialized new Manifest with claim generator user agent string
-    let mut manifest = Manifest::new("Toni-c2pa-GenAI-code/0.1".to_owned());
-
+    let mut manifest = Manifest::new("C2PA-PROV-GenAI/0.1".to_owned());
+    let model_name = model_data.model.clone();
     // A new `Action` reflecting the creation of the media file    
     let created = Actions::new()
         .add_action(
             Action::new(c2pa_action::CREATED)
-                .set_source_type("https://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgoritmicMedia".to_owned())
-                .set_software_agent("Toni-c2pa-GenAI-code/0.1")
+                .set_source_type("https://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia".to_owned())
+                .set_software_agent(model_name.as_str())
                 .set_when(now_string.clone())
         );
 
@@ -160,8 +160,8 @@ create_new_manifest (src_path: &String, dest_path: &String, prompt_data: &Prompt
    manifest.add_assertion(&creative_work)?;
 
    // Add custom data until this label to the manifest
-   manifest.add_labeled_assertion("org.contentauth.GenAI.model_data", &model_data)?;
-   manifest.add_labeled_assertion("org.contentauth.GenAI.prompt_data", &prompt_data)?;
+   manifest.add_labeled_assertion("edu.upc.fib.C2PA_Prov.model_data", &model_data)?;
+   manifest.add_labeled_assertion("edu.upc.fib.C2PA_Prov.prompt_data", &prompt_data)?;
 
    let source = PathBuf::from(src_path);
    let dest = PathBuf::from(dest_path);
@@ -177,15 +177,17 @@ create_new_manifest (src_path: &String, dest_path: &String, prompt_data: &Prompt
 }
 
 fn 
-edit_media_with_action (src_path: &String, dest_path: &String, action: &str, prompt_data: &PromptData, model_data: &ModelData) -> Result<(), c2pa::Error> {
+edit_manifest (src_path: &String, dest_path: &String, action: &str, prompt_data: &PromptData, model_data: &ModelData) -> Result<(), c2pa::Error> {
     // Manifests cannot be edited. To modify the contents of the manifest store, pull in earlier versions of the content
     // and its manifest as an ingredient.
     let parent = Ingredient::from_file(src_path)?;
 
-    let mut manifest = Manifest::new("Toni-c2pa-GenAI-code/0.1".to_owned());
+    let mut manifest = Manifest::new("C2PA-PROV-GenAI/0.1".to_owned());
 
     let now: DateTime<Utc> = SystemTime::now().into();
     let now_string = now.to_rfc3339();
+
+    let model_name = model_data.model.clone();
 
     // also add an action that we opened the file
     let actions = Actions::new()
@@ -194,7 +196,7 @@ edit_media_with_action (src_path: &String, dest_path: &String, action: &str, pro
                 .set_parameter("identifier", parent.instance_id().to_owned())
                 .expect("set identifier")
                 .set_reason("editing")
-                .set_software_agent("Toni-c2pa-GenAI-code/0.1")
+                .set_software_agent(model_name.as_str())
                 .set_when(now_string.clone())
         )
         .add_action(
@@ -203,15 +205,15 @@ edit_media_with_action (src_path: &String, dest_path: &String, action: &str, pro
                 .expect("set identifier")
                 .set_reason("editing from Media file")
                 .set_source_type("http://cv.iptc.org/newscodes/digitalsourcetype/compositeWithTrainedAlgorithmicMedia".to_owned())
-                .set_software_agent("Toni-c2pa-GenAI-code/0.1")
+                .set_software_agent(model_name.as_str())
                 .set_when(now_string.clone())
         );
 
     manifest.set_parent(parent)?;
     manifest.add_assertion(&actions)?;
     // Add custom data until this label to the manifest
-    manifest.add_labeled_assertion("org.contentauth.GenAI.model_data", &model_data)?;
-    manifest.add_labeled_assertion("org.contentauth.GenAI.prompt_data", &prompt_data)?;
+    manifest.add_labeled_assertion("edu.upc.fib.C2PA_Prov.model_data", &model_data)?;
+    manifest.add_labeled_assertion("edu.upc.fib.C2PA_Prov.prompt_data", &prompt_data)?;
 
     // Create a ps256 signer using certs and key files
     let signcert_path = "./certs/ps256.pub";
@@ -240,7 +242,7 @@ read_manifest (path: &String) -> Result<(), c2pa::Error> {
         _ => ()
     }
 
-    println!("manifest store: {}", manifest_store);
+    //println!("manifest store: {}", manifest_store);
 
     // active manifest is the most recently added manifest in the store.
     let manifest = manifest_store.get_active().unwrap();
@@ -329,7 +331,7 @@ main() {
                 Some(edit_path) => {
                     
                     // edit the media file with the source image as ingredient
-                    match edit_media_with_action(&source_path, &edit_path, c2pa_action::EDITED, &prompt_data, &model_data) {
+                    match edit_manifest(&source_path, &edit_path, c2pa_action::EDITED, &prompt_data, &model_data) {
                         Ok(_) => read_manifest(&edit_path).expect("manifest should be printed to stdout"),
                         Err(e) => panic!("Error creating edit manifest: {}", e)
                     };
@@ -344,7 +346,7 @@ main() {
             }
         }
         (None, Some(file_path), read_path_opt) => {
-            match edit_media_with_action(&source_path, &file_path, c2pa_action::EDITED, &prompt_data, &model_data) {
+            match edit_manifest(&source_path, &file_path, c2pa_action::EDITED, &prompt_data, &model_data) {
                 Ok(_) => read_manifest(&file_path).expect("manifest should be printed to stdout"),
                 Err(e) => panic!("Error creating edit manifest: {}", e)
             };            
